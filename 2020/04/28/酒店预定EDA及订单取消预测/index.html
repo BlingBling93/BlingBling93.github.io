@@ -6,17 +6,26 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://blingbling93.github.io">
-  <title>Tag: 随笔 | Billie</title>
+  <title>酒店预定EDA及订单取消预测 | Billie</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Billie is a sensitive Robot">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Billie">
-<meta property="og:url" content="https://blingbling93.github.io/tags/%E9%9A%8F%E7%AC%94/index.html">
+  <meta name="description" content="对酒店预定数据进行探索性数据分析（Exploratory Data Analysis, EDA），并预测新订单的取消率。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="酒店预定EDA及订单取消预测">
+<meta property="og:url" content="https://blingbling93.github.io/2020/04/28/%E9%85%92%E5%BA%97%E9%A2%84%E5%AE%9AEDA%E5%8F%8A%E8%AE%A2%E5%8D%95%E5%8F%96%E6%B6%88%E9%A2%84%E6%B5%8B/index.html">
 <meta property="og:site_name" content="Billie">
-<meta property="og:description" content="Billie is a sensitive Robot">
+<meta property="og:description" content="对酒店预定数据进行探索性数据分析（Exploratory Data Analysis, EDA），并预测新订单的取消率。">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blingbling93.github.io/images/guest_home.png">
+<meta property="og:image" content="https://blingbling93.github.io/images/world_map.png">
+<meta property="og:image" content="https://blingbling93.github.io/images/market_seg.png">
+<meta property="og:image" content="https://blingbling93.github.io/images/hotel_booking_1.jpg">
+<meta property="og:image" content="https://blingbling93.github.io/images/hotel_booking_2.jpg">
+<meta property="article:published_time" content="2020-04-28T05:52:09.000Z">
+<meta property="article:modified_time" content="2020-05-28T15:09:45.726Z">
 <meta property="article:author" content="Billie">
+<meta property="article:tag" content="数据分析">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blingbling93.github.io/images/guest_home.png">
   
     <link rel="alternative" href="/atom.xml" title="Billie" type="application/atom+xml">
   
@@ -142,60 +151,347 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-酒店预定EDA及订单取消预测" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/03/19/lost-in-twenties/" class="archive-article-date">
-  	<time datetime="2020-03-19T07:04:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-19</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/03/19/lost-in-twenties/">Lost in Twenties</a>
+    <h1 class="article-title" itemprop="name">
+      酒店预定EDA及订单取消预测
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2020/04/28/%E9%85%92%E5%BA%97%E9%A2%84%E5%AE%9AEDA%E5%8F%8A%E8%AE%A2%E5%8D%95%E5%8F%96%E6%B6%88%E9%A2%84%E6%B5%8B/" class="archive-article-date">
+  	<time datetime="2020-04-28T05:52:09.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-28</time>
+</a>
+        <div align="center" class="post-count">
+          字数：2.1k字 | 预计阅读时长：10分钟
+        </div>  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>对酒店预定数据进行探索性数据分析（Exploratory Data Analysis, EDA），并预测新订单的取消率。</p>
+<a id="more"></a>
+
+<h4 id="Content"><a href="#Content" class="headerlink" title="Content"></a>Content</h4><p><strong>EDA</strong></p>
+<p>数据来源于Nuno Antonio 2019年发布的文章<a href="https://www.sciencedirect.com/science/article/pii/S2352340918315191" target="_blank" rel="noopener">Hotel booking demand datasets</a></p>
+<p>该数据库包含位于葡萄牙的一个城市酒店以及一个度假酒店从2015.07.01至2017.08.31约12w预定数据<br><em>对于多数问题，为了得到真实的入住率，只有未被取消的预定被视为有效数据</em></p>
+<p>通过浏览数据的组成，我希望从数据中提取出一下信息：</p>
+<ul>
+<li>预定客人都来自哪里？</li>
+<li>每晚的房价是多少？</li>
+<li>一年中房价的变化趋势是什么样？</li>
+<li>一年中最忙碌的季节是什么时候？</li>
+<li>客人平均在酒店住多久？</li>
+<li>客人通过什么平台进行预定？</li>
+<li>有多少订单被取消？</li>
+<li>哪个月的取消订单量最大？</li>
+</ul>
+<p><strong>预测订单取消情况</strong><br>设计模型预测一组客人是否入住/取消订单，以此帮助酒店更好的安排接待事务。酒店也可以在模型的帮助下发布多于实际数量的房间数来提高收益。</p>
+<p><strong>评估特征重要性</strong><br>哪些特征对于预测订单取消情况尤其重要?</p>
+<h6 id="1-EDA"><a href="#1-EDA" class="headerlink" title="1. EDA"></a>1. EDA</h6><p><strong>客人来自哪里？</strong><br><img src="/images/guest_home.png" alt="Home country of guests"></p>
+<p><img src="/images/world_map.png" alt="Home country of guests"><br>可以看到，这两个酒店接待了来自世界各地的旅客，大多数旅客来自葡萄牙和欧洲其他国家。<br><strong>客房每晚均价是多少？</strong><br>两个酒店都提供不同房型、餐食的选择，季节也是房价非常重要的影响因素。由于数据中没有明确给出结算货币的信息，考虑到葡萄牙的主要流通货币，我们默认房价以欧元结算。<br><em>考虑数据脱敏的问题，不同酒店之间拥有相同房型代号的房间配置不一定一样</em><br><strong>一年中房价变化的趋势如何？</strong><br>为了简化问题，这里不考虑房间类型及含餐食等因素的影响，根据每人每晚的房价来观察价格的变化趋势。</p>
+<p>可以看到，度假酒店的价格在夏天明显高于城市酒店（旅游旺季）；城市酒店的价格在一年之中变化较小，春、秋两季价格较高。<br><strong>一年中最忙碌的季节是什么时候？</strong><br>城市酒店在春秋两季的订单量更多，同时期价格也更高。7、8月入住的客人相对少，价格有所下降。<br>对于度假酒店来说，6-9月的客人数量有所减少（价格最高的时候）。<br>两个酒店都在冬天迎来淡季。<br><strong>客人平均在酒店住多久？</strong><br>多数客人会在城市酒店住上1-4晚，度假酒店也呈现相似的偏好性。值得注意的是，很多客人会在度假酒店预定7晚的住宿。<br><strong>预定来源</strong></p>
+<p><img src="/images/market_seg.png" alt="Bookings per market segment"><br>从图上可以看出，团队预定能获得最优惠的价格，而航司的预定价格差不多是团队预定价格的两倍。<br>造成这种差异可能的原因是什么呢？</p>
+<ul>
+<li>航司平均只提前4天预定酒店，相比其他途径提前104天来说提前的时间非常短；</li>
+<li>航司预定属于刚性需求</li>
+<li>航司的预定通常为每人/间，总的房间需求数量相比家庭更多</li>
+</ul>
+<p><strong>有多少订单被取消？</strong><br><strong>哪个月的取消订单数量最多？</strong></p>
+<h6 id="2-订单取消情况预测"><a href="#2-订单取消情况预测" class="headerlink" title="2. 订单取消情况预测"></a>2. 订单取消情况预测</h6><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> sklearn <span class="keyword">as</span> skl</span><br><span class="line"><span class="keyword">from</span> sklearn.impute <span class="keyword">import</span> SimpleImputer</span><br><span class="line"><span class="keyword">from</span> sklearn.pipeline <span class="keyword">import</span> Pipeline</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> OneHotEncoder</span><br><span class="line"><span class="keyword">from</span> sklearn.compose <span class="keyword">import</span> ColumnTransformer</span><br><span class="line"><span class="keyword">from</span> sklearn.tree <span class="keyword">import</span> DecisionTreeClassifier</span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> RandomForestClassifier</span><br><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LogisticRegression</span><br><span class="line"><span class="keyword">from</span> xgboost.sklearn <span class="keyword">import</span> XGBClassifier</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> KFold</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> cross_val_score</span><br><span class="line"><span class="keyword">import</span> eli5</span><br><span class="line"><span class="keyword">import</span> seaborn <span class="keyword">as</span> sns</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">file_path = <span class="string">'./hotel_bookings.csv'</span></span><br><span class="line">data = pd.read_csv(file_path)</span><br><span class="line">data.columns</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>Index([&apos;hotel&apos;, &apos;is_canceled&apos;, &apos;lead_time&apos;, &apos;arrival_date_year&apos;,
+       &apos;arrival_date_month&apos;, &apos;arrival_date_week_number&apos;,
+       &apos;arrival_date_day_of_month&apos;, &apos;stays_in_weekend_nights&apos;,
+       &apos;stays_in_week_nights&apos;, &apos;adults&apos;, &apos;children&apos;, &apos;babies&apos;, &apos;meal&apos;,
+       &apos;country&apos;, &apos;market_segment&apos;, &apos;distribution_channel&apos;,
+       &apos;is_repeated_guest&apos;, &apos;previous_cancellations&apos;,
+       &apos;previous_bookings_not_canceled&apos;, &apos;reserved_room_type&apos;,
+       &apos;assigned_room_type&apos;, &apos;booking_changes&apos;, &apos;deposit_type&apos;, &apos;agent&apos;,
+       &apos;company&apos;, &apos;days_in_waiting_list&apos;, &apos;customer_type&apos;, &apos;adr&apos;,
+       &apos;required_car_parking_spaces&apos;, &apos;total_of_special_requests&apos;,
+       &apos;reservation_status&apos;, &apos;reservation_status_date&apos;],
+      dtype=&apos;object&apos;)</code></pre><p>重要的参数有哪些？</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cancel_corr = data.corr()[<span class="string">'is_canceled'</span>]</span><br><span class="line">cancel_corr.abs().sort_values(ascending=<span class="literal">False</span>)[<span class="number">1</span>:]</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>lead_time                         0.293123
+total_of_special_requests         0.234658
+required_car_parking_spaces       0.195498
+booking_changes                   0.144381
+previous_cancellations            0.110133
+is_repeated_guest                 0.084793
+agent                             0.083114
+adults                            0.060017
+previous_bookings_not_canceled    0.057358
+days_in_waiting_list              0.054186
+adr                               0.047557
+babies                            0.032491
+stays_in_week_nights              0.024765
+company                           0.020642
+arrival_date_year                 0.016660
+arrival_date_week_number          0.008148
+arrival_date_day_of_month         0.006130
+children                          0.005048
+stays_in_weekend_nights           0.001791
+Name: is_canceled, dtype: float64</code></pre><p>可以看出lead_time, total_of_special_requests, required_car_parking_spaces, booking_changes and previous_cancellations是影响订单取消前五重要的因素。由于预定状态可能随时变化，booking_changes这个参数不予采用。days_in_waiting_list和arrival_date_year这两个参数意义同样有限。需要考虑的另一个影响因素是reservation_status</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data.groupby(<span class="string">'is_canceled'</span>)[<span class="string">'reservation_status'</span>].value_counts()</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>is_canceled  reservation_status
+0            Check-Out             75166
+1            Canceled              43017
+             No-Show                1207
+Name: reservation_status, dtype: int64</code></pre><p><strong>比较不同的模型</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">num_features = [<span class="string">"lead_time"</span>,<span class="string">"arrival_date_week_number"</span>,<span class="string">"arrival_date_day_of_month"</span>,</span><br><span class="line">                <span class="string">"stays_in_weekend_nights"</span>,<span class="string">"stays_in_week_nights"</span>,<span class="string">"adults"</span>,<span class="string">"children"</span>,</span><br><span class="line">                <span class="string">"babies"</span>,<span class="string">"is_repeated_guest"</span>, <span class="string">"previous_cancellations"</span>,</span><br><span class="line">                <span class="string">"previous_bookings_not_canceled"</span>,<span class="string">"agent"</span>,<span class="string">"company"</span>,</span><br><span class="line">                <span class="string">"required_car_parking_spaces"</span>, <span class="string">"total_of_special_requests"</span>, <span class="string">"adr"</span>]</span><br><span class="line"></span><br><span class="line">cat_features = [<span class="string">"hotel"</span>,<span class="string">"arrival_date_month"</span>,<span class="string">"meal"</span>,<span class="string">"market_segment"</span>,</span><br><span class="line">                <span class="string">"distribution_channel"</span>,<span class="string">"reserved_room_type"</span>,<span class="string">"deposit_type"</span>,<span class="string">"customer_type"</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># Separate features and predicted value</span></span><br><span class="line">features = num_features + cat_features</span><br><span class="line">X = data.drop([<span class="string">"is_canceled"</span>], axis=<span class="number">1</span>)[features]</span><br><span class="line">y = data[<span class="string">"is_canceled"</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># preprocess numerical feats:</span></span><br><span class="line"><span class="comment"># for most num cols, except the dates, 0 is the most logical choice as fill value</span></span><br><span class="line"><span class="comment"># and here no dates are missing.</span></span><br><span class="line">num_transformer = SimpleImputer(strategy=<span class="string">"constant"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Preprocessing for categorical features:</span></span><br><span class="line">cat_transformer = Pipeline(steps=[</span><br><span class="line">    (<span class="string">"imputer"</span>, SimpleImputer(strategy=<span class="string">"constant"</span>, fill_value=<span class="string">"Unknown"</span>)),</span><br><span class="line">    (<span class="string">"onehot"</span>, OneHotEncoder(handle_unknown=<span class="string">'ignore'</span>))])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Bundle preprocessing for numerical and categorical features:</span></span><br><span class="line">preprocessor = ColumnTransformer(transformers=[(<span class="string">"num"</span>, num_transformer, num_features),</span><br><span class="line">                                               (<span class="string">"cat"</span>, cat_transformer, cat_features)])</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># define models to test:</span></span><br><span class="line">base_models = [(<span class="string">"DT_model"</span>, DecisionTreeClassifier(random_state=<span class="number">42</span>)),</span><br><span class="line">               (<span class="string">"RF_model"</span>, RandomForestClassifier(random_state=<span class="number">42</span>,n_jobs=<span class="number">-1</span>)),</span><br><span class="line">               (<span class="string">"LR_model"</span>, LogisticRegression(random_state=<span class="number">42</span>,n_jobs=<span class="number">-1</span>)),</span><br><span class="line">               (<span class="string">"XGB_model"</span>, XGBClassifier(random_state=<span class="number">42</span>, n_jobs=<span class="number">-1</span>))]</span><br><span class="line"></span><br><span class="line"><span class="comment"># split data into 'kfolds' parts for cross validation,</span></span><br><span class="line"><span class="comment"># use shuffle to ensure random distribution of data:</span></span><br><span class="line">kfolds = <span class="number">4</span> <span class="comment"># 4 = 75% train, 25% validation</span></span><br><span class="line">split = KFold(n_splits=kfolds, shuffle=<span class="literal">True</span>, random_state=<span class="number">42</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Preprocessing, fitting, making predictions and scoring for every model:</span></span><br><span class="line"><span class="keyword">for</span> name, model <span class="keyword">in</span> base_models:</span><br><span class="line">    <span class="comment"># pack preprocessing of data and the model in a pipeline:</span></span><br><span class="line">    model_steps = Pipeline(steps=[(<span class="string">'preprocessor'</span>, preprocessor),</span><br><span class="line">                              (<span class="string">'model'</span>, model)])</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># get cross validation score for each model:</span></span><br><span class="line">    cv_results = cross_val_score(model_steps, </span><br><span class="line">                                 X, y, </span><br><span class="line">                                 cv=split,</span><br><span class="line">                                 scoring=<span class="string">"accuracy"</span>,</span><br><span class="line">                                 n_jobs=<span class="number">-1</span>)</span><br><span class="line">    <span class="comment"># output:</span></span><br><span class="line">    min_score = round(min(cv_results), <span class="number">4</span>)</span><br><span class="line">    max_score = round(max(cv_results), <span class="number">4</span>)</span><br><span class="line">    mean_score = round(np.mean(cv_results), <span class="number">4</span>)</span><br><span class="line">    std_dev = round(np.std(cv_results), <span class="number">4</span>)</span><br><span class="line">    print(<span class="string">f"<span class="subst">&#123;name&#125;</span> cross validation accuarcy score: <span class="subst">&#123;mean_score&#125;</span> +/- <span class="subst">&#123;std_dev&#125;</span> (std) min: <span class="subst">&#123;min_score&#125;</span>, max: <span class="subst">&#123;max_score&#125;</span>"</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment">#pipeline.fit(X_train, y_train)</span></span><br><span class="line">    <span class="comment">#preds = pipeline.predict(X_valid)</span></span><br><span class="line">    <span class="comment">#score = accuracy_score(y_valid, preds)</span></span><br><span class="line">    <span class="comment">#print(f"&#123;name&#125; accuracy_score: &#123;round(score, 4)&#125;")</span></span><br></pre></td></tr></table></figure>
+
+<pre><code>DT_model cross validation accuarcy score: 0.8246 +/- 0.0016 (std) min: 0.8221, max: 0.8263
+RF_model cross validation accuarcy score: 0.8664 +/- 0.0012 (std) min: 0.8646, max: 0.8676
+LR_model cross validation accuarcy score: 0.7936 +/- 0.0011 (std) min: 0.792, max: 0.7951
+XGB_model cross validation accuarcy score: 0.8473 +/- 0.0011 (std) min: 0.8456, max: 0.8487</code></pre><p>随机森林模型表现最好。<br>而通过调整超参数来优化模型得到的优化效果非常有限</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Enhanced RF model with the best parameters I found:</span></span><br><span class="line">rf_model_enh = RandomForestClassifier(n_estimators=<span class="number">160</span>,</span><br><span class="line">                               max_features=<span class="number">0.4</span>,</span><br><span class="line">                               min_samples_split=<span class="number">2</span>,</span><br><span class="line">                               n_jobs=<span class="number">-1</span>,</span><br><span class="line">                               random_state=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">split = KFold(n_splits=kfolds, shuffle=<span class="literal">True</span>, random_state=<span class="number">42</span>)</span><br><span class="line">model_pipe = Pipeline(steps=[(<span class="string">'preprocessor'</span>, preprocessor),</span><br><span class="line">                              (<span class="string">'model'</span>, rf_model_enh)])</span><br><span class="line">cv_results = cross_val_score(model_pipe, </span><br><span class="line">                                 X, y, </span><br><span class="line">                                 cv=split,</span><br><span class="line">                                 scoring=<span class="string">"accuracy"</span>,</span><br><span class="line">                                 n_jobs=<span class="number">-1</span>)</span><br><span class="line"><span class="comment"># output:</span></span><br><span class="line">min_score = round(min(cv_results), <span class="number">4</span>)</span><br><span class="line">max_score = round(max(cv_results), <span class="number">4</span>)</span><br><span class="line">mean_score = round(np.mean(cv_results), <span class="number">4</span>)</span><br><span class="line">std_dev = round(np.std(cv_results), <span class="number">4</span>)</span><br><span class="line">print(<span class="string">f"Enhanced RF model cross validation accuarcy score: <span class="subst">&#123;mean_score&#125;</span> +/- <span class="subst">&#123;std_dev&#125;</span> (std) min: <span class="subst">&#123;min_score&#125;</span>, max: <span class="subst">&#123;max_score&#125;</span>"</span>)</span><br></pre></td></tr></table></figure>
+
+<pre><code>Enhanced RF model cross validation accuarcy score: 0.8681 +/- 0.0006 (std) min: 0.8673, max: 0.869</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># fit model(pipeline) so values can be accessed:</span></span><br><span class="line">model_pipe.fit(X,y)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Names of all (encoded) features are needed.</span></span><br><span class="line"><span class="comment"># Get names of columns from One Hot Encoding:</span></span><br><span class="line">onehot_columns = list(model_pipe.named_steps[<span class="string">'preprocessor'</span>].</span><br><span class="line">                      named_transformers_[<span class="string">'cat'</span>].</span><br><span class="line">                      named_steps[<span class="string">'onehot'</span>].</span><br><span class="line">                      get_feature_names(input_features=cat_features))</span><br><span class="line"></span><br><span class="line"><span class="comment"># Add num_features for full list.</span></span><br><span class="line"><span class="comment"># Order must be as in definition of X, where num_features are first: </span></span><br><span class="line">feat_imp_list = num_features + onehot_columns</span><br><span class="line"></span><br><span class="line"><span class="comment"># show 10 most important features, provide names of features:</span></span><br><span class="line">feat_imp_df = eli5.formatters.as_dataframe.explain_weights_df(</span><br><span class="line">    model_pipe.named_steps[<span class="string">'model'</span>],</span><br><span class="line">    feature_names=feat_imp_list)</span><br><span class="line">feat_imp_df.head(<span class="number">10</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}</code></pre><p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>feature</th>
+      <th>weight</th>
+      <th>std</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>lead_time</td>
+      <td>0.145140</td>
+      <td>0.015235</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>deposit_type_Non Refund</td>
+      <td>0.140641</td>
+      <td>0.108007</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>adr</td>
+      <td>0.096222</td>
+      <td>0.003412</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>deposit_type_No Deposit</td>
+      <td>0.079059</td>
+      <td>0.106235</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>arrival_date_day_of_month</td>
+      <td>0.069410</td>
+      <td>0.002033</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>arrival_date_week_number</td>
+      <td>0.053763</td>
+      <td>0.001999</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>total_of_special_requests</td>
+      <td>0.050567</td>
+      <td>0.013314</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>agent</td>
+      <td>0.043060</td>
+      <td>0.006392</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>stays_in_week_nights</td>
+      <td>0.041588</td>
+      <td>0.002291</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>previous_cancellations</td>
+      <td>0.038626</td>
+      <td>0.013459</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+在这里三个影响权重最大的因素分别是lead_time，deposite_type_Non Refund以及adr
+
+<p><strong>lead_time：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># group data for lead_time:</span></span><br><span class="line">lead_cancel_data = data.groupby(<span class="string">"lead_time"</span>)[<span class="string">"is_canceled"</span>].describe()</span><br><span class="line"><span class="comment"># use only lead_times wih more than 10 bookings for graph:</span></span><br><span class="line">lead_cancel_data_10 = lead_cancel_data.loc[lead_cancel_data[<span class="string">"count"</span>] &gt;= <span class="number">10</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment">#show figure:</span></span><br><span class="line">plt.figure(figsize=(<span class="number">12</span>, <span class="number">8</span>))</span><br><span class="line">sns.regplot(x=lead_cancel_data_10.index, y=lead_cancel_data_10[<span class="string">"mean"</span>].values * <span class="number">100</span>)</span><br><span class="line">plt.title(<span class="string">"Effect of lead time on cancelation"</span>, fontsize=<span class="number">16</span>)</span><br><span class="line">plt.xlabel(<span class="string">"Lead time"</span>, fontsize=<span class="number">16</span>)</span><br><span class="line">plt.ylabel(<span class="string">"Cancelations [%]"</span>, fontsize=<span class="number">16</span>)</span><br><span class="line"><span class="comment"># plt.xlim(0,365)</span></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="/images/hotel_booking_1.jpg" alt="Effect of lead time on cancelation"></p>
+<p>在到达前几天内产生的预定一般不会被取消，而提前一年的预定则大概率会被取消。</p>
+<p><strong>Deposit Type：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># group data for deposit_type:</span></span><br><span class="line">deposit_cancel_data = data.groupby(<span class="string">"deposit_type"</span>)[<span class="string">"is_canceled"</span>].describe()</span><br><span class="line"></span><br><span class="line"><span class="comment">#show figure:</span></span><br><span class="line">plt.figure(figsize=(<span class="number">12</span>, <span class="number">8</span>))</span><br><span class="line">sns.barplot(x=deposit_cancel_data.index, y=deposit_cancel_data[<span class="string">"mean"</span>] * <span class="number">100</span>)</span><br><span class="line">plt.title(<span class="string">"Effect of deposit_type on cancelation"</span>, fontsize=<span class="number">16</span>)</span><br><span class="line">plt.xlabel(<span class="string">"Deposit type"</span>, fontsize=<span class="number">16</span>)</span><br><span class="line">plt.ylabel(<span class="string">"Cancelations [%]"</span>, fontsize=<span class="number">16</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="/images/hotel_booking_2.jpg" alt="Effect of deposit_type on cancelation"></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">随笔</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据分析</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=https://blingbling93.github.io/2020/04/28/%E9%85%92%E5%BA%97%E9%A2%84%E5%AE%9AEDA%E5%8F%8A%E8%AE%A2%E5%8D%95%E5%8F%96%E6%B6%88%E9%A2%84%E6%B5%8B/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/2020/02/21/Tableau/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Tableau</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -218,9 +514,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
@@ -284,15 +580,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Tableau</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">数据分析</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">Tableau</a>
               </li>
             
             <div class="clearfix"></div>
